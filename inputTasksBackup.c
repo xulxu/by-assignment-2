@@ -6,8 +6,8 @@ struct Task {
     char name[NAME_LEN];
     int start_month;
     int end_month;
-    int num_dependencies;
-    int dependencies[10];
+    int num_dependences;
+    int dependences[10];
 };
 
 void input_task(struct Task *task, int num_tasks, int task_index);
@@ -69,7 +69,7 @@ void input_task(struct Task *task, int num_tasks, int task_index)
     //for readability, task index si converted to the task number and not its position in the array
     task_index++;
 
-    //task name
+    //taks name
     printf("Task %d name:\n", task_index);
     fgets(task->name, NAME_LEN, stdin);
     while(task->name[0] == '\n' || task->name[0] == ' ' || task->name[0] == '\t')
@@ -77,7 +77,7 @@ void input_task(struct Task *task, int num_tasks, int task_index)
         fgets(task->name, NAME_LEN, stdin);
     }
     
-    //task starting month
+    //tast starting month
     printf("Please enter a starting month (1-12):\n");
     scanf("%d", &task->start_month);
     while(task->start_month < 1 || task->start_month > 12)
@@ -103,23 +103,23 @@ void input_task(struct Task *task, int num_tasks, int task_index)
         scanf("%d", &task->end_month);
     }
 
-    //task number of dependencies
-    printf("Please enter the number of dependencies:\n");
-    scanf("%d", &task->num_dependencies);
-    while(task->num_dependencies <0 || task->num_dependencies > (num_tasks - 1))
+    //task number of dependences
+    printf("Please enter the number of dependences:\n");
+    scanf("%d", &task->num_dependences);
+    while(task->num_dependences < 0 || task->num_dependences > (num_tasks - 1))
     {
-        printf("The number of dependencies must be comprised between 0 and %d. Please enter again:\n", num_tasks - 1);
-        scanf("%d", &task->num_dependencies);
+        printf("The number of dependences must be comprised between 0 and %d. Please enter again:\n", num_tasks - 1);
+        scanf("%d", &task->num_dependences);
     }
 
-    //task dependencies
-    for(int i = 0; i < task->num_dependencies; i++)
+    //task dependences
+    for(int i = 0; i < task->num_dependences; i++)
     {
         printf("Dependency %d (please indicate the task number):\n", i+1);
-        scanf("%d", &task->dependencies[i]);
-        while(task->dependencies[i] < 1 || task->dependencies[i] > num_tasks || task->dependencies[i] == task_index)
+        scanf("%d", &task->dependences[i]);
+        while(task->dependences[i] < 1 || task->dependences[i] > num_tasks || task->dependences[i] == task_index)
         {
-            if(task->dependencies[i] < 1 || task->dependencies[i] > num_tasks)
+            if(task->dependences[i] < 1 || task->dependences[i] > num_tasks)
             {
                 printf("The task number must be between 1 and %d. ", num_tasks);
             }
@@ -128,7 +128,7 @@ void input_task(struct Task *task, int num_tasks, int task_index)
                 printf("The task cannot be its own dependency! ");
             }
             printf("Please enter again:\n");
-            scanf("%d", &task->dependencies[i]);
+            scanf("%d", &task->dependences[i]);
         }
     }
 }
@@ -169,14 +169,14 @@ void print_task(struct Task task, int task_index)
     task_index++;
 
     printf("Task %d name: %s", task_index, task.name);
-    printf("Starting month: %d\n", task.start_month);
+    printf("Sarting month: %d\n", task.start_month);
     printf("Ending month: %d\n", task.end_month);
-    if(task.num_dependencies > 0)
+    if(task.num_dependences > 0)
     {
         printf("Dependencies: ");
-        for(int i = 0; i < task.num_dependencies; i++)
+        for(int i = 0; i < task.num_dependences; i++)
         {
-            printf("%d ", task.dependencies[i]);
+            printf("%d ", task.dependences[i]);
         }   
     }
     printf("\n\n");
