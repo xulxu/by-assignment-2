@@ -22,6 +22,11 @@ void input_task(struct Task *task, int num_tasks, int task_index)
     getchar(); //Clear input buffer. Newline carried over from userchoice in main.c
     printf("Task %d name:\n", task_index);
     fgets(task->name, NAME_LEN, stdin);
+    while(task->name[0] == '\n')
+    {
+        printf("Please enter at least one character for the task name.\n");
+        fgets(task->name, NAME_LEN, stdin);
+    }
     task->name[strlen(task->name)-1] = '\0';
 
     //task starting month
