@@ -11,6 +11,9 @@ const char *MONTH_NAME[] = { //month array (in pair with enums)
     "July","August","September","October","November","December"
 };
 
+char* TASKS[] = { "FindBank", "GetMortgage", "DrawDown", "BuildFoundation", "BuildWalls",
+                  "RoofAndCeiling", "Plumbing", "Electrics", "InspectBuild", "Snagging"}; //Example tasks array
+
 void display_gantt_test() {
     for (int i = 0; i < 204; i++){ //top border
         printf("_");
@@ -55,9 +58,6 @@ void display_gantt_test() {
 
     printf("\n");
 
-    char* TASKS[] = { "FindBank", "GetMortgage", "DrawDown", "BuildFoundation", "BuildWalls",
-    "RoofAndCeiling", "Plumbing", "Electrics", "Inspect_Build", "Snagging"}; //Tasks array
-
     for (int i = 0; i < sizeof(TASKS) / sizeof(TASKS[0]); i++) { //loop to print tasks
         printf("%s", TASKS[i]);
 
@@ -67,6 +67,7 @@ void display_gantt_test() {
 
         for (int k = 0; k < 13; k++) { //month cells
             printf("|");
+
             for (int i = 0; i < 11; i++){
                 printf(" ");
             }
