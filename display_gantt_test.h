@@ -14,8 +14,8 @@ const char *MONTH_NAME[] = { //month array (in pair with enums)
 char* TASKS[] = { "FindBank", "GetMortgage", "DrawDown", "BuildFoundation", "BuildWalls",
                   "RoofAndCeiling", "Plumbing", "Electrics", "InspectBuild", "Snagging"}; //Example tasks array
 
-void display_gantt_test(struct Task *task) {
-    struct Task test_data[] = {
+void display_gantt_test() {
+    struct Task test_data[10] = {
             {.name = "", .start_month = 1, .end_month = 2, .num_dependencies = 0, .dependencies = 0},
             {.name = "", .start_month = 2, .end_month = 2, .num_dependencies = 1, .dependencies = {0, 1}},
             {.name = "", .start_month = 4, .end_month = 6, .num_dependencies = 2, .dependencies = {0, 1, 2}},

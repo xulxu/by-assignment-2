@@ -11,10 +11,7 @@ int main() {
     scanf("%d", &user_choice);
 
     if (user_choice == 1) {
-        struct Task test_data[10];
-        struct Task *ptr_example;
-        ptr_example = &test_data[10];
-        display_gantt_test(ptr_example);
+        display_gantt_test();
     } else if (user_choice == 2) {
         struct Task user_task[10];
         struct Task *ptr_task;
