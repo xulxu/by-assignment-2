@@ -7,12 +7,11 @@ struct Task {
     int start_month;
     int end_month;
     int num_dependencies;
-    int dependencies[10];
+    int dependencies[9];
 };
 
 void input_task(struct Task *task, int num_tasks, int task_index);
 void edit(struct Task tasks[], int num_tasks);
-void print_task(struct Task task, int task_index);
 
 void input_task(struct Task *task, int num_tasks, int task_index)
 {
@@ -20,14 +19,11 @@ void input_task(struct Task *task, int num_tasks, int task_index)
     task_index++;
 
     //task name
+    getchar(); //Clear input buffer. Newline carried over from userchoice in main.c
     printf("Task %d name:\n", task_index);
     fgets(task->name, NAME_LEN, stdin);
-    while(task->name[0] == '\n' || task->name[0] == ' ' || task->name[0] == '\t')
-    {
-        fgets(task->name, NAME_LEN, stdin);
-        task->name[strlen(task->name)-1]='\0';
-    }
-    
+    task->name[strlen(task->name)-1] = '\0';
+
     //task starting month
     printf("Please enter a starting month (1-12):\n");
     scanf("%d", &task->start_month);
@@ -91,19 +87,15 @@ void edit(struct Task tasks[], int num_tasks)
     getchar(); //Clear input buffer. Newline carried over from userchoice in main.c
     printf("Please enter the name of the task to modify:\n");
     fgets(task_name, NAME_LEN, stdin);
+    task->name[strlen(task->name)-1] = '\0';
     if(task_name[0] != '\n')
     {
         for(int i = 0; i <= num_tasks; i++)
         {
             if(strcmp(tasks[i].name, task_name) == 0) //issue might be newline in task_name because of fgets.
             {
-                printf("Previous version of this task:\n");
-                print_task(tasks[i], i);
                 input_task(&tasks[i], num_tasks, i);
-                printf("New version of the task:\n");
-                print_task(tasks[i], i);
-
-            break;
+                break;
             }
         }
     }
@@ -113,21 +105,3 @@ void edit(struct Task tasks[], int num_tasks)
     }    
 }
 
-
-void print_task(struct Task task, int task_index)
-{
-    task_index++;
-
-    printf("Task %d name: %s", task_index, task.name);
-    printf("Starting month: %d\n", task.start_month);
-    printf("Ending month: %d\n", task.end_month);
-    if(task.num_dependencies > 0)
-    {
-        printf("Dependencies: ");
-        for(int i = 0; i < task.num_dependencies; i++)
-        {
-            printf("%d ", task.dependencies[i]);
-        }   
-    }
-    printf("\n\n");
-}

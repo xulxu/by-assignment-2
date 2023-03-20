@@ -16,19 +16,19 @@ int main() {
         struct Task user_task[10];
         struct Task *ptr_task;
         int num_tasks;
-        int choice;
 
         printf("How many tasks do you wish to add? (1-10)\n");
         scanf("%d", &num_tasks);
 
-        while(num_tasks < 1) {
+        while(num_tasks < 1 || num_tasks > 10) {
+            if(num_tasks < 1) {
             printf("You must enter at least one task.\n");
             scanf("%d", &num_tasks);
-        }
-
-        while(num_tasks > 10) {
+            }
+            if(num_tasks > 10) {
             printf("That is too many tasks. Please add at most 10 tasks.\n");
             scanf("%d", &num_tasks);
+            }
         }
 
         for(int i = 0; i < num_tasks; i++) {
@@ -44,14 +44,14 @@ int main() {
 
         while(1) {
             printf("Type '1' to edit a task and '2' to exit the program.\n");
-            scanf("%d", &choice);
+            scanf("%d", &user_choice);
 
-            while(choice < 1 || choice > 2) {
+            while(user_choice < 1 || user_choice > 2) {
                 printf("Please enter a number between 1 and 2.\n");
-                scanf("%d", &choice);
+                scanf("%d", &user_choice);
             }
 
-            if(choice == 1) {
+            if(user_choice == 1) {
                 edit(user_task, num_tasks);
             } else {
                 return 0;
