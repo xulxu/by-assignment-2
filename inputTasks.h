@@ -25,6 +25,7 @@ void input_task(struct Task *task, int num_tasks, int task_index)
     while(task->name[0] == '\n' || task->name[0] == ' ' || task->name[0] == '\t')
     {
         fgets(task->name, NAME_LEN, stdin);
+        task->name[strlen(task->name)-1]='\0';
     }
     
     //task starting month
@@ -86,23 +87,22 @@ void input_task(struct Task *task, int num_tasks, int task_index)
 
 void edit(struct Task tasks[], int num_tasks)
 {
-    char task_name[NAME_LEN];
+    char task_name[NAME_LEN] = {}; //initialize array to 0
+    getchar(); //Clear input buffer. Newline carried over from userchoice in main.c
     printf("Please enter the name of the task to modify:\n");
     fgets(task_name, NAME_LEN, stdin);
     if(task_name[0] != '\n')
     {
-        for(int i = 0; i < num_tasks; i++)
+        for(int i = 0; i <= num_tasks; i++)
         {
-            if(strcmp(tasks[i].name, task_name) == 0)
+            if(strcmp(tasks[i].name, task_name) == 0) //issue might be newline in task_name because of fgets.
             {
                 printf("Previous version of this task:\n");
                 print_task(tasks[i], i);
                 input_task(&tasks[i], num_tasks, i);
                 printf("New version of the task:\n");
                 print_task(tasks[i], i);
-                /*
-                display_gantt(num_tasks, tasks[]);
-                */
+
             break;
             }
         }

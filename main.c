@@ -36,10 +36,10 @@ int main() {
             input_task(ptr_task, num_tasks, i);
         }
         printf("\n");
+        gantt_static();
 
-        printf("Here are the tasks you entered:\n");
         for(int i = 0; i < num_tasks; i++) {
-            print_task(user_task[i], i);
+            display_gantt(user_task[i], i);
         }
 
         while(1) {
