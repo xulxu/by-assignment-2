@@ -92,7 +92,7 @@ void edit(struct Task tasks[], int num_tasks)
     getchar(); //Clear input buffer. Newline carried over from userchoice in main.c
     printf("Please enter the name of the task to modify:\n");
     fgets(task_name, NAME_LEN, stdin);
-    tasks->name[strlen(task->name)-1] = '\0';
+    tasks->name[strlen(tasks->name)-1] = '\0';
     if(task_name[0] != '\n')
     {
         for(int i = 0; i <= num_tasks; i++)
