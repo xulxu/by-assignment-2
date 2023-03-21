@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "inputTasks.h"
 #include "display_gantt_test.h"
+#include "check_dependencies.h"
 
 int main() {
     int user_choice;
@@ -43,16 +44,18 @@ int main() {
         }
 
         while(1) {
-            printf("Type '1' to edit a task and '2' to exit the program.\n");
+            printf("Type '1' to edit a task, '2' to run a test and '3' to exit the program.\n");
             scanf("%d", &user_choice);
 
-            while(user_choice < 1 || user_choice > 2) {
-                printf("Please enter a number between 1 and 2.\n");
+            while(user_choice < 1 || user_choice > 3) {
+                printf("Please enter a number between 1 and 3.\n");
                 scanf("%d", &user_choice);
             }
 
             if(user_choice == 1) {
                 edit(user_task, num_tasks);
+            } else if(user_choice == 2) {
+                test(user_task, num_tasks);
             } else {
                 return 0;
             }
