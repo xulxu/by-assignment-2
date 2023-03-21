@@ -40,7 +40,7 @@ int main() {
         gantt_static();
 
         for(int i = 0; i < num_tasks; i++) {
-            display_gantt(user_task[i], i);
+            display_gantt(user_task[i]);
         }
 
         while(1) {
@@ -54,6 +54,10 @@ int main() {
 
             if(user_choice == 1) {
                 edit(user_task, num_tasks);
+                gantt_static();
+                for(int i = 0; i < num_tasks; i++) {
+                    display_gantt(user_task[i]);
+                }
             } else if(user_choice == 2) {
                 test(user_task, num_tasks);
             } else {

@@ -19,14 +19,12 @@ void input_task(struct Task *task, int num_tasks, int task_index)
     task_index++;
 
     //task name
-    getchar(); //Clear input buffer. Newline carried over from userchoice in main.c
     printf("Task %d name:\n", task_index);
-    fgets(task->name, NAME_LEN, stdin);
-    while(task->name[0] == '\n')
+    do //removed getchar() because newline was carried from num_tasks choice but not edit option
     {
-        printf("Please enter at least one character for the task name.\n");
         fgets(task->name, NAME_LEN, stdin);
-    }
+    } while(task->name[0] == '\n');
+
     task->name[strlen(task->name)-1] = '\0';
 
     //task starting month
@@ -54,6 +52,10 @@ void input_task(struct Task *task, int num_tasks, int task_index)
         printf("Please enter again:\n");
         scanf("%d", &task->end_month);
     }
+
+    //decrement tasks so that they fit the gantt generation model
+    task->start_month--;
+    task->end_month--;
 
     //task number of dependencies
     printf("Please enter the number of dependencies:\n");
@@ -88,25 +90,21 @@ void input_task(struct Task *task, int num_tasks, int task_index)
 
 void edit(struct Task tasks[], int num_tasks)
 {
-    char task_name[NAME_LEN] = {}; //initialize array to 0
-    getchar(); //Clear input buffer. Newline carried over from userchoice in main.c
+    char task_name[NAME_LEN];
     printf("Please enter the name of the task to modify:\n");
-    fgets(task_name, NAME_LEN, stdin);
-    tasks->name[strlen(tasks->name)-1] = '\0';
-    if(task_name[0] != '\n')
+    do //removed getchar() because newline was carried from num_tasks choice but not edit option
     {
-        for(int i = 0; i <= num_tasks; i++)
-        {
-            if(strcmp(tasks[i].name, task_name) == 0) //issue might be newline in task_name because of fgets.
-            {
-                input_task(&tasks[i], num_tasks, i);
-                break;
-            }
-        }
-    }
-    else
-    {
-        printf("Operation cancelled.\n");
-    }    
-}
+        fgets(task_name, NAME_LEN, stdin);
+    } while(task_name[0] == '\n');
+    task_name[strlen(task_name)-1] = '\0';
 
+    //find the task and re-input it
+    for(int i = 0; i < num_tasks; i++)
+    {
+        if(strcmp(tasks[i].name, task_name) == 0) //issue might be newline in task_name because of fgets.
+        {
+            input_task(&tasks[i], num_tasks, i);
+            break;
+        }
+    } 
+}
