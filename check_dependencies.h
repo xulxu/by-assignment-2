@@ -8,7 +8,8 @@ void test(struct Task tasks[], int num_tasks);
 void test(struct Task tasks[], int num_tasks)
 {
     //pointers holding the location of the path length and numbers
-    int *ptr_path_length;
+    int path_length;
+    int *ptr_path_length = &path_length;
     int *ptr_path;
     //variable that indicates whether a path to a circular dependency exists.
     int path_found = 0;
@@ -24,11 +25,14 @@ void test(struct Task tasks[], int num_tasks)
         {
             printf("Circular dependency found!\n"
                     "%d -> ", i);
+            //ptr path - 1 because we don't want the last number to be printed with an arrow
+            printf("Path length = %d", *ptr_path_length);
             for(int j = 0; j < (*ptr_path_length) - 1; j++)
             {
                 printf("%d -> ", *(ptr_path + j));
             }
-            printf("%d !\n", *(ptr_path + *ptr_path_length));
+            //pointer path - 1 because count starts at 0
+            printf("%d !\n", *(ptr_path + *ptr_path_length) - 1);
             path_found = 1;
         }
     }
