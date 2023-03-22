@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int * circular_path(struct Task tasks[], struct Task next_dependency, int task_checked, int *path_length);
+int circular_path(struct Task tasks[], struct Task next_dependency, int task_checked, int *path_length, int *path);
 void test(struct Task tasks[], int num_tasks);
 
 
@@ -10,75 +10,63 @@ void test(struct Task tasks[], int num_tasks)
     //pointers holding the location of the path length and numbers
     int path_length;
     int *ptr_path_length = &path_length;
-    int *ptr_path;
-    //variable that indicates whether a path to a circular dependency exists.
-    int path_found = 0;
+    int *ptr_path = malloc(sizeof(int) * 10);
 
     for(int i = 0; i < num_tasks; i++)
     {
-    *ptr_path_length = 0;
-    //the function return null if no circular dependency is found,
-    //and the path if it is found. I, that case, it also modifies the path length accordingly.
-    ptr_path = circular_path(tasks, tasks[i], i, ptr_path_length);
-        //printing the path
-        if(ptr_path != NULL)
+        *ptr_path_length = 0;
+        if(circular_path(tasks, tasks[i], i+1, ptr_path_length, ptr_path) == 1)
         {
-            printf("Circular dependency found!\n"
-                    "%d -> ", i);
-            //ptr path - 1 because we don't want the last number to be printed with an arrow
-            printf("Path length = %d", *ptr_path_length);
+            printf("Circular dependency found!\n");
+            printf("%d -> ", i+1);
             for(int j = 0; j < (*ptr_path_length) - 1; j++)
             {
                 printf("%d -> ", *(ptr_path + j));
             }
             //pointer path - 1 because count starts at 0
-            printf("%d !\n", *(ptr_path + *ptr_path_length) - 1);
-            path_found = 1;
+            printf("%d !\n", *(ptr_path - 1 + *ptr_path_length));
+            goto end_test;
         }
     }
-    if(path_found == 0)
-    {
-        printf("No circular dependency found.\n");
-    }
+
+    printf("No circular dependency found.\n");
+
+    end_test:
     printf("End of test.\n");
+    free(ptr_path);
 }
 
 
-int * circular_path(struct Task tasks[], struct Task next_dependency, int task_checked, int *path_length)
+int circular_path(struct Task tasks[], struct Task next_dependency, int task_checked, int *path_length, int *path)
 {
     //base case 1: there are no more dependencies to be checked: no path
     if(next_dependency.num_dependencies == 0)
     {
-        return NULL;
+        return 0;
     }
 
-    //base case 2: the next dependency is the same as the task being checked: path = that dependency
+    //base case 2: the next dependency is the same as the task being checked: write that dependency
     for(int i = 0; i < next_dependency.num_dependencies; i++)
     {
         if(next_dependency.dependencies[i] == task_checked)
         {
-            //use of malloc so that the pointer can be accessed outside this function call
-            ++*path_length;
-            int *ptr_dependency = malloc(sizeof(int));
-            ptr_dependency = &next_dependency.dependencies[i];
-            return ptr_dependency;
+            (*path_length)++;
+            *path = next_dependency.dependencies[i];
+            return 1;
         }
     }
 
-    //recursive case 1: the path is not null: return the path
+    //recursive case 1: the path exists: write dependencies along that path
     for(int i = 0; i < next_dependency.num_dependencies; i++)
     {
-        if(circular_path(tasks, tasks[next_dependency.dependencies[i]], task_checked, path_length) != NULL)
+        if(circular_path(tasks, tasks[next_dependency.dependencies[i]-1], task_checked, path_length, path+1) == 1)
         {
-            //same as base case 2 but the function is called again for the remaining of the path
-            ++*path_length;
-            int *ptr_dependency = malloc(sizeof(int));
-            ptr_dependency = &next_dependency.dependencies[i];
-            *(ptr_dependency + 1) = *circular_path(tasks, tasks[next_dependency.dependencies[i]], task_checked, path_length);
-            return ptr_dependency;
+            (*path_length)++;
+            *path = next_dependency.dependencies[i];
+            return 1;
         }
     }
 
     //recursive case 2: the path is null: no path
-    return NULL;
+    return 0;
 }
