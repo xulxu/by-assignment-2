@@ -12,7 +12,32 @@ int main() {
     scanf("%d", &user_choice);
 
     if (user_choice == 1) {
-        display_gantt_test();
+        int num_tasks = 10;
+        gantt_static();
+        for(int i = 0; i < 10; i++) {
+            display_gantt(test_data[i]);
+        }
+        while(1) {
+            printf("Type '1' to edit a task, '2' to run a test and '3' to exit the program.\n");
+            scanf("%d", &user_choice);
+
+            while(user_choice < 1 || user_choice > 3) {
+                printf("Please enter a number between 1 and 3.\n");
+                scanf("%d", &user_choice);
+            }
+
+            if(user_choice == 1) {
+                edit(test_data, num_tasks);
+                gantt_static();
+                for(int i = 0; i < num_tasks; i++) {
+                    display_gantt(test_data[i]);
+                }
+            } else if(user_choice == 2) {
+                test(test_data, num_tasks);
+            } else {
+                return 0;
+            }
+        }
     } else if (user_choice == 2) {
         struct Task user_task[10];
         struct Task *ptr_task;
@@ -69,4 +94,3 @@ int main() {
         goto userchoice;
     }
 }
-2
