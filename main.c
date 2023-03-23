@@ -5,7 +5,6 @@
 
 int main() {
     int user_choice;
-
     userchoice:
     printf("Welcome to the Gantt Generator.\n"
            "Would you like to view a test example or create your Gantt Chart from scratch? (1 or 2)\n");
@@ -69,7 +68,7 @@ int main() {
         }
 
         while(1) {
-            printf("Type '1' to edit a task, '2' to run a test and '3' to exit the program.\n");
+            printf("Type '1' to edit a task, '2' to run a test for circular dependencies or '3' to exit the program and clear the terminal.\n");
             scanf("%d", &user_choice);
 
             while(user_choice < 1 || user_choice > 3) {
@@ -83,8 +82,8 @@ int main() {
                 for(int i = 0; i < num_tasks; i++) {
                     display_gantt(user_task[i]);
                 }
-            } else if(user_choice == 2) {
-                test(user_task, num_tasks);
+            } else if (user_choice == 2) {
+                    test(user_task, num_tasks);
             } else {
                 return 0;
             }

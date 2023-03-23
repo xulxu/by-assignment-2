@@ -1,5 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+void scrclr(){ //clear screen. different functions depending on the OS
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
 
 enum months { //enums as requested by assignment
     January,February,March,April,May,June,
@@ -12,25 +21,26 @@ const char *MONTH_NAME[] = { //month array (in pair with enums)
 };
 
 struct Task test_data[10] = { //preset for example gantt chart. use of enums
-        {.name = "Brainstorm", .start_month = January, .end_month = February, .num_dependencies = 0, .dependencies = 0},
+        {.name = "Brainstorm", .start_month = January, .end_month = February, .num_dependencies = 1, .dependencies = 2},
         {.name = "Finalizing Choice", .start_month = February, .end_month = February, .num_dependencies = 1, .dependencies = 1},
         {.name = "Research", .start_month = February, .end_month = March, .num_dependencies = 1, .dependencies = 2},
         {.name = "Design", .start_month = March, .end_month = March, .num_dependencies = 1, .dependencies = 3},
         {.name = "Prototyping", .start_month = April, .end_month = June, .num_dependencies = 2, .dependencies = {3, 4}},
         {.name = "Manufacturing", .start_month = June, .end_month = October, .num_dependencies = 3, .dependencies = {3, 4, 5}},
         {.name = "Construction", .start_month = October, .end_month = October, .num_dependencies = 1, .dependencies = 6},
-        {.name = "Finish", .start_month = October, .end_month = November, .num_dependencies = 2, .dependencies = {4, 7}},
-        {.name = "Review", .start_month = November, .end_month = December, .num_dependencies = 1, .dependencies = 8},
+        {.name = "Finish", .start_month = October, .end_month = November, .num_dependencies = 2, .dependencies = {4, 10}},
+        {.name = "Review", .start_month = November, .end_month = December, .num_dependencies = 1, .dependencies = {8, 10}},
         {.name = "Evaluation", .start_month = December, .end_month = December, .num_dependencies = 2, .dependencies = {8, 9}},
 };
 
 void display_gantt(struct Task task);
 
 void gantt_static() { //function that prints static features of a gantt chart
+    scrclr();
+
     for (int i = 0; i < 209; i++){ //top border
         printf("_");
     }
-
     printf("\n");
 
     for (int i = 0; i < 45; i++) { //empty cell for task name
@@ -39,7 +49,7 @@ void gantt_static() { //function that prints static features of a gantt chart
         if (i == 44) { //start of month printing
             printf("|");
 
-            const int MONTH_SLOT_SIZE = 11; //constant cell width (Longest month name [September} + 2 [padding])
+            const int MONTH_SLOT_SIZE = 11; //constant cell width (longest month name [September] + 2 [padding])
 
             for (enum months month = January; month <= December; month++) { //print month cells. via loop and use of enums
                 int month_length = strlen(MONTH_NAME[month]); //length of month string
@@ -72,7 +82,6 @@ void gantt_static() { //function that prints static features of a gantt chart
 void display_gantt(struct Task task) {
      int start = task.start_month;
      int end = task.end_month;
-
      printf("%s", task.name);
 
      for (int j = 0; j < (45 - strlen(task.name)); j++){ //max task name length + printing uniform padding
@@ -80,8 +89,7 @@ void display_gantt(struct Task task) {
      }
 
      for (enum months month = January; month <= December; month++) { //month cells
-         printf("|");
-         printf("    ");
+         printf("|    ");
 
          if (month >= start && month <= end){ //print XXX for months between start and end
              printf("XXX    ");
